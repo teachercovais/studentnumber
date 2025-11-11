@@ -1,0 +1,77 @@
+<!--
+Random Number Generator widget (1 - 18)
+Auto-scales to fit page size; removed 'Last' display.
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Random Number (1–18)</title>
+  <style>
+    :root{--bg:#0f172a;--accent:#06b6d4;--muted:#9aa7b2}
+    html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;background:linear-gradient(180deg,var(--bg), #071029);color:#fff;display:flex;align-items:center;justify-content:center}
+
+    .widget{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;width:100%;height:100%;box-sizing:border-box;padding:2vw}
+
+    h1{font-size:clamp(1rem,2vw,1.8rem);margin:0 0 1vh 0;color:var(--muted)}
+
+    .number{font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:1px;font-size:clamp(6rem,25vw,20rem);line-height:0.9;margin:1vh 0}
+
+    .controls{display:flex;gap:2vw;flex-wrap:wrap;justify-content:center;margin-top:1vh}
+
+    button{appearance:none;border:0;border-radius:10px;font-weight:600;cursor:pointer;transition:transform 0.15s ease;}
+    button:active{transform:scale(0.97)}
+
+    .btn-primary{background:linear-gradient(90deg,var(--accent), #07a3c0);color:#042027;padding:1em 2em;font-size:clamp(1rem,2vw,2rem)}
+    .btn-secondary{background:transparent;border:1px solid rgba(255,255,255,0.1);color:var(--muted);padding:0.8em 1.5em;font-size:clamp(0.8rem,1.5vw,1.2rem)}
+
+    .pulse{animation:pulse 350ms ease-in-out}
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+  </style>
+</head>
+<body>
+  <div class="widget" role="application" aria-label="Random number generator 1 to 18">
+    <h1>Random Number Generator — 1 to 18</h1>
+    <div id="number" class="number">—</div>
+
+    <div class="controls">
+      <button id="generate" class="btn-primary">Generate</button>
+      <button id="clear" class="btn-secondary">Clear</button>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const min = 1, max = 18;
+      const numberEl = document.getElementById('number');
+      const genBtn = document.getElementById('generate');
+      const clearBtn = document.getElementById('clear');
+
+      function rand(){
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function show(n){
+        numberEl.textContent = n;
+        numberEl.classList.remove('pulse');
+        void numberEl.offsetWidth;
+        numberEl.classList.add('pulse');
+      }
+
+      genBtn.addEventListener('click', ()=> show(rand()));
+      clearBtn.addEventListener('click', ()=>{
+        numberEl.textContent = '—';
+      });
+
+      window.addEventListener('keydown', (e)=>{
+        if(e.code === 'Space'){ e.preventDefault(); show(rand()); }
+        if(e.key === 'Escape') clearBtn.click();
+      });
+
+      genBtn.focus();
+    })();
+  </script>
+</body>
+</html>
